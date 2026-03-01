@@ -1,0 +1,4 @@
+# Sensitive environment variables (never commit secrets)
+.env
+.env.*
+!.env.example
