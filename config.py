@@ -64,4 +64,4 @@ SAMPLE_DIR.mkdir(exist_ok=True)
 # If it finds fewer, the supervisor will flag it as low quality.
 MIN_INSIGHTS_REQUIRED = 3
 
-SUPPORTED_EXTENSIONS = [".pdf",".xlsx",".xls",".csv",".docx",".txt"]
+SUPPORTED_EXTENSIONS = [".pdf",".xlsx",".xls",".csv",".docx",".txt"]    
