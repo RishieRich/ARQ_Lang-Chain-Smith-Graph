@@ -3,6 +3,8 @@
 # Central configuration for the entire insight-agent system.
 # Every agent imports settings from here.
 # Nothing is hardcoded anywhere else in the codebase.
+# Date : 12 March 2026 
+# Author : Rishikesh Pote
 # ─────────────────────────────────────────────────────────────
 
 
