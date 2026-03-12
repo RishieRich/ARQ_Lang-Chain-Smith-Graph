@@ -55,7 +55,7 @@ OUTPUT_DIR = BASE_DIR / "output"
 
 # Where you drop test files (PDFs, Excel, CSV, Word)
 
-SAMPLE_DIR = BASE_DIR / "sample_docs"
+SAMPLE_DIR = BASE_DIR / "sample_docs"   
 
 # Create these folders if they don't exist yet
 OUTPUT_DIR.mkdir(exist_ok=True)
