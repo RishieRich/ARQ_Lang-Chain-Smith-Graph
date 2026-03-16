@@ -1,49 +1,43 @@
 # graph/state.py
-# ─────────────────────────────────────────────────────────────
-# Defines the shared state object passed between all agents.
-# Think of this as the "whiteboard" every agent reads & writes.
-# LangGraph passes this state from node to node automatically.
-# ─────────────────────────────────────────────────────────────
+from typing import TypedDict, List, Optional
+from pydantic import BaseModel
 
-from typing import TypedDict, List, Optional 
+
+class DocumentInsights(BaseModel):
+    """Structured output the analysis agent must return."""
+    summary: str
+    insights: List[str]
+    themes: List[str]
+    key_facts: List[str]
+    confidence_score: float
+
 
 class AgentState(TypedDict):
-    # ── Set by user at the start ───────────────────────────
-    # The full path to the file the user wants to analyze
+
+    # ── Input ──────────────────────────────────────────────
     file_path: str
 
-    # ── Written by Ingestion Agent ─────────────────────────
-    # The full raw text extracted from the document
-    raw_text : str
+    # ── Ingestion Agent ────────────────────────────────────
+    raw_text: str
+    chunks: List[str]
+    file_metadata: dict
 
-    # List of text chunks (raw_text split into smaller pieces)
-    # Each chunk is a string the LLM can process in one call
-    chunks : List[str]
+    # ── Analysis Agent ─────────────────────────────────────
+    insights_data: Optional[dict]
 
-    # Metadata about the file (name, type, size, page count etc)
-    # We use dict so it can hold any key-value pairs
-    file_metadata : dict 
+    # ── Evaluation Agent ───────────────────────────────────
+    eval_score: Optional[float]
+    eval_feedback: Optional[str]
+    retry_count: int
 
-    # ── Written by Analysis Agent ──────────────────────────
-    # List of insight strings extracted by the LLM
-    insights : List[str]
+    # ── Writer Agent ───────────────────────────────────────
+    output_path: Optional[str]
 
-    # Short summary of the entire document (1-2 paragraphs)
-    summary : str
-
-    # Key themes found in the document
-    themes : List[str]
-
-    # ── Written by Writer Agent ────────────────────────────
-    # Full path to the generated Word document
-    output_path : str
-
-    # ── Written by Supervisor ──────────────────────────────
-    # Which agent should run next
-    next_agent : str
-
-    # If something goes wrong, the error message goes here
+    # ── Supervisor ─────────────────────────────────────────
+    next_agent: str
     error: Optional[str]
+    completed_steps: List[str]
 
-    # Track which agents have completed (for debugging)
-    completed_steps : List[str]
+    # ── Human in the loop ──────────────────────────────────
+    awaiting_human_review: bool
+    human_approved: Optional[bool]
