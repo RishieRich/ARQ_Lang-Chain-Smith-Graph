@@ -67,3 +67,8 @@ SAMPLE_DIR.mkdir(exist_ok=True)
 MIN_INSIGHTS_REQUIRED = 3
 
 SUPPORTED_EXTENSIONS = [".pdf",".xlsx",".xls",".csv",".docx",".txt"]    
+
+MAX_RETRIES = 2
+EVAL_PASS_SCORE = 0.7
+EVAL_DATASET_NAME = "insight-agent-evals"
+HUMAN_REVIEW_ENABLED = False
