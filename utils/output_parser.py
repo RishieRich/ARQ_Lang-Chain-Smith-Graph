@@ -55,10 +55,54 @@ class EvaluationOutput(BaseModel):
     """
 
     score: float = Field(
-        description="Overall quality score from 0.0 to 1.0."
+        description="Overall quality score from 0.0 to 1.0. "
                     "Above 0.7 means output is ready for the client."
-    ) 
+    )
 
     faithfulness: float = Field(
-        description=""
+        description="Are all insights grounded in the source document? 0.0 to 1.0"
     )
+
+    completeness: float = Field(
+        description="Are the most important points covered? 0.0 to 1.0"
+    )
+
+    clarity: float = Field(
+        description="Is the summary clear and well structured? 0.0 to 1.0"
+    )
+
+    feedback: str = Field(
+        description="Specific explanation of what is good and what is missing or wrong"
+    )
+
+    passed: bool = Field(
+        description="True if score >= 0.7 and output is ready for client. False if retry needed."
+    )
+
+
+# ── Helper: convert Pydantic model to dict ─────────────────
+# AgentState stores insights_data as a plain dict
+# (TypedDict cant hold Pydantic objects directly).
+# This helper converts cleanly.
+
+def insight_to_dict(insight: InsightOutput) -> dict:
+    """Converts InsightOutput Pydantic model to plain dict for state storage."""
+    return {
+        "summary": insight.summary,
+        "insights": insight.insights,
+        "themes": insight.themes,
+        "key_facts": insight.key_facts,
+        "confidence_score": insight.confidence_score
+    }
+
+
+def eval_to_dict(evaluation: EvaluationOutput) -> dict:
+    """Converts EvaluationOutput Pydantic model to plain dict for state storage."""
+    return {
+        "score": evaluation.score,
+        "faithfulness": evaluation.faithfulness,
+        "completeness": evaluation.completeness,
+        "clarity": evaluation.clarity,
+        "feedback": evaluation.feedback,
+        "passed": evaluation.passed
+    }
